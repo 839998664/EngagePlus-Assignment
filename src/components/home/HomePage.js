@@ -22,27 +22,35 @@ class HomePage extends React.Component {
     render = () => {
         return <div className="container-fluid">
             <h1>EngagePlus Assignment Calculator</h1>
-            <Button text={this.props.calculatorState.mode} theme={this.state.theme} onButtonClick={this.onButtonClick} />
-            <ThemeSwitcher switchTheme={this.handleThemeSwitch} theme={this.state.theme} />
+            <Button text={this.props.calculatorState.mode} theme={this.props.calculatorState.theme} onButtonClick={this.onSwitchMode} />
+            <ThemeSwitcher switchTheme={this.handleThemeSwitch} theme={this.props.calculatorState.theme} />
             <input type='text' value={this.props.calculatorState.result} readOnly />
-            <Keypad onButtonClick={this.onButtonClick} theme={this.state.theme} mode={this.props.calculatorState.mode} />
+            <Keypad onOperatorButtonClick={this.onOperatorButtonClick} onNumericButtonClick={this.onNumericButtonClick} theme={this.props.calculatorState.theme} mode={this.props.calculatorState.mode} />
         </div>;
     }
 
-    onButtonClick = ({ target }) => {
+    onSwitchMode = ({ target }) => {
+        if (target.innerText === "Scientific Mode") {
+            this.props.actions.switch_mode("Normal Mode");
+        } else {
+            this.props.actions.switch_mode("Scientific Mode");
+        }
+    }
+    onOperatorButtonClick = ({ target }) => {
         this.props.actions.keypad_clicked(target);
+    }
+    onNumericButtonClick = ({ target }) => {
+        this.props.actions.number_clicked(target);
     }
     handleThemeSwitch = ({ target }) => {
         switch (target.innerText) {
             case "Light Theme":
-                document.body.style.backgroundColor = "#fff";
-                document.body.style.color = "#000";
-                this.setState({ theme: "light" });
+                /*  */
+                this.props.actions.switch_theme("light");
                 break;
             case "Dark Theme":
-                document.body.style.backgroundColor = "#000";
-                document.body.style.color = "#fff";
-                this.setState({ theme: "dark" })
+                /*  */
+                this.props.actions.switch_theme("dark");
                 break;
             default:
                 break;
@@ -61,9 +69,12 @@ const matchDispatchToProps = (dispatch) => {
             subtract: bindActionCreators(calculator.subtraction, dispatch),
             multiply: bindActionCreators(calculator.multiplication, dispatch),
             divide: bindActionCreators(calculator.division, dispatch),
+            switch_mode: bindActionCreators(calculator.switch_mode, dispatch),
+            switch_theme: bindActionCreators(calculator.switch_theme, dispatch),
             set_operand1: bindActionCreators(calculator.operand1, dispatch),
             set_operand2: bindActionCreators(calculator.operand2, dispatch),
-            keypad_clicked: bindActionCreators(calculator.keypad_clicked, dispatch)
+            keypad_clicked: bindActionCreators(calculator.keypad_clicked, dispatch),
+            number_clicked: bindActionCreators(calculator.number_clicked, dispatch)
         }
     }
 }

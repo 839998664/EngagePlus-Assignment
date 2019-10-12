@@ -24,6 +24,22 @@ export function operand2(operand) {
     return { type: types.SET_OPERAND2, operand };
 }
 
+export function operator(operator) {
+    return { type: types.SET_OPERATOR, operator };
+}
+
+export function switch_mode(mode) {
+    return { type: types.SWITCH_MODE, mode };
+}
+
 export function keypad_clicked(target) {
     return { type: types.KEYPAD_CLICKED, target };
+}
+
+export function number_clicked(target) {
+    return { type: types.NUMERIC_KEY, target };
+}
+
+export function switch_theme(theme) {
+    return { type: types.SWITCH_THEME, theme };
 }
